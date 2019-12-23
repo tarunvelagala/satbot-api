@@ -1,11 +1,13 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template, request, make_response
+import urllib
+import json
+import os
 
 app = Flask(__name__)
 
 companies = [
     {
-        'id': 1,
-        'company_name': 'Cognizant',
+        'id': 1, 'company_name': 'Cognizant',
         'drive_date': '2019-01-12'
     },
     {
@@ -18,7 +20,14 @@ companies = [
 
 @app.route('/')
 def hello_world():
-    return 'Hello World!'
+    return 'Helloworld'
+
+
+@app.route('/satbot-api/v1.0/webhook', methods=['POST'])
+def webhook():
+    req = request.get_json(silent=True, force=True)
+    print("Request:")
+    print(json.dumps(req, indent=4))
 
 
 @app.route('/satbot-api/v1.0/drivedetails/<company_name>', methods=['GET'])
